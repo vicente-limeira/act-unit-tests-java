@@ -2,7 +2,6 @@ package br.ufrn.imd.services;
 
 import br.ufrn.imd.models.BankAccount;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,14 +15,14 @@ public class ComplianceApiImpl implements ComplianceApi {
         client = HttpClient.newHttpClient();
     }
 
+    @Override
     public boolean CanItReceiveNewDeposit(BankAccount account, double value) {
-
         try {
             var route = String.format( "api/compliance/account/%s", account.getId().toString());
             var request = createNewRequest(route);
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 500)
+            if (response.statusCode() >= 500)
                 throw new RuntimeException("COMPLIANCE API NOT AVAILABLE");
 
             return response.statusCode() >= 200 && response.statusCode() <= 400;

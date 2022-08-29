@@ -35,5 +35,6 @@ public class BankAccountRepositoryTests {
         var insertedAccount = repository.get(result.getBankAccount().get().getId());
 
         assertNotNull(insertedAccount);
+        assertEquals(123456, insertedAccount.getAccountNumber());
     }
 }

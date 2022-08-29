@@ -36,6 +36,18 @@ public class BankAccount {
         return balance;
     }
 
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public void setAgency(int agency) {
+        this.agency = agency;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public void deposit(double value) {
         if (value <= 0) throw new IllegalArgumentException();
         this.balance += value;
@@ -50,17 +62,5 @@ public class BankAccount {
     public void transfer(BankAccount beneficiaryAccount, double value){
         this.withdraw(value);
         beneficiaryAccount.deposit(value);
-    }
-
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public void setAgency(int agency) {
-        this.agency = agency;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 }

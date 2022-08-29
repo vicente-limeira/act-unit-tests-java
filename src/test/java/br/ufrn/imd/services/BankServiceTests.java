@@ -55,10 +55,10 @@ public class BankServiceTests {
     @Test
     public void testDepositException(){
         var account = repository.get(UUID.randomUUID().toString());
-        when(repository.create(account)).thenThrow();
+        when(repository.update(account)).thenThrow();
         var result = bankService.deposit(account, 1000);
 
         assertTrue(result.getBankAccount().isEmpty());
-        verify(repository).create(any(BankAccount.class));
+        verify(repository).update(any(BankAccount.class));
     }
 }

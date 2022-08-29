@@ -7,5 +7,5 @@ import java.util.UUID;
 public interface Repository {
     BankAccount get(String uuid);
     Throwable create(BankAccount bankAccount);
-    void update (BankAccount bankAccount);
+    Throwable update (BankAccount bankAccount);
 }

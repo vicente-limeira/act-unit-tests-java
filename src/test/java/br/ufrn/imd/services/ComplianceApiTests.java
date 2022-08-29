@@ -1,5 +1,6 @@
 package br.ufrn.imd.services;
 
+
 import br.ufrn.imd.models.BankAccount;
 import br.ufrn.imd.repositories.Repository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,16 +21,21 @@ public class ComplianceApiTests {
     public void Setup() {
         repository = mock(Repository.class);
         complianceApi = new ComplianceApiImpl();
+
         bankService = new BankService(repository, complianceApi);
     }
+
 
     @Test
     public void testDepositAllowed(){
         var account = new BankAccount("1de7d918-badf-412b-893d-0c0aa1ee16e7", 123456, 123, 0);
 
         var result = bankService.deposit(account, 100);
-        assertFalse(result.getBankAccount().isEmpty());
+
+        assertEquals(200, result.getStatusCode());
+        assertTrue(result.getBankAccount().isPresent());
     }
+
 
     @Test
     public void testDepositNotAllowed(){
@@ -37,8 +43,10 @@ public class ComplianceApiTests {
 
         var result = bankService.deposit(account, 100);
         assertTrue(result.getBankAccount().isEmpty());
+        assertEquals(401, result.getStatusCode());
         assertEquals("THIS ACCOUNT CAN'T DEPOSIT: THE COMPLIANCE NOT ALLOWED THIS TRANSACTION!", result.getMessages()[0]);
     }
+
 
     @Test
     public void testDepositException(){
@@ -46,6 +54,8 @@ public class ComplianceApiTests {
 
         var result = bankService.deposit(account, 100);
         assertTrue(result.getBankAccount().isEmpty());
+        assertEquals(500, result.getStatusCode());
         assertEquals("THIS ACCOUNT CAN'T DEPOSIT: CONNECTION FAILED!", result.getMessages()[0]);
     }
+
 }
