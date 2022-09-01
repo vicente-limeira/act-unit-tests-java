@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/api/compliance/account/1de7d918-badf-412b-893d-0c0aa1ee16e7"
+    "url": "/api/compliance/account/1de7d918-badf-412b-893d-0c0aa1ee16e7/deposit"
   },
   "response": {
     "status": 200
