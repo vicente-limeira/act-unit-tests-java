@@ -31,6 +31,22 @@ public class ComplianceApiImpl implements ComplianceApi {
         }
     }
 
+    @Override
+    public boolean CanItReceiveNewWithDraw(BankAccount account, double value) {
+        try {
+            var route = String.format( "api/compliance/account/%s/withdraw", account.getId().toString());
+            var request = createNewRequest(route);
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 500)
+                throw new RuntimeException("COMPLIANCE API NOT AVAILABLE");
+
+            return response.statusCode() >= 200 && response.statusCode() <= 400;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static HttpRequest createNewRequest(String route){
         var url = String.format("http://localhost:8081/%s", route);
         var uri = URI.create(url);

@@ -36,6 +36,15 @@ public class ComplianceApiTests {
         assertTrue(result.getBankAccount().isPresent());
     }
 
+    @Test
+    public void testWithDrawAllowed(){
+        var account = new BankAccount("1de7d918-badf-412b-893d-0c0aa1ee16e7", 123456, 123, 0);
+        account.deposit(1000);
+        var result = bankService.withdraw(account, 100);
+
+        assertEquals(200, result.getStatusCode());
+        assertTrue(result.getBankAccount().isPresent());
+    }
 
     @Test
     public void testDepositNotAllowed(){

@@ -29,6 +29,7 @@ public class BankServiceTests {
 
         when(repository.get(any(String.class))).thenReturn(fixture.getNewBankAccount());
         when(complianceApi.CanItReceiveNewDeposit(any(BankAccount.class), any(double.class))).thenReturn(true);
+        when(complianceApi.CanItReceiveNewWithDraw(any(BankAccount.class), any(double.class))).thenReturn(true);
 
         bankService = new BankService(repository, complianceApi);
     }
@@ -61,4 +62,18 @@ public class BankServiceTests {
         assertTrue(result.getBankAccount().isEmpty());
         verify(repository).update(any(BankAccount.class));
     }
+
+    @Test
+    public void testWithDraw(){
+        var account = repository.get(UUID.randomUUID().toString());
+        account.deposit(1000);
+        var result = bankService.withdraw(account, 500);
+
+        // Assets
+        assertTrue(result.getBankAccount().isPresent());
+        assertEquals(500, result.getBankAccount().get().getBalance());
+
+        // Verify
+        verify(repository).update(any(BankAccount.class));
+    }    
 }
